@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet.photon.css">
+        <!-- Início MarkerCluster -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+        <!-- Fim MarkerCluster -->
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+
+
+        /* --- LAYOUT MOBILE  --- */
+        @media (max-width: 768px) {
+          
+            html, body {
+                height: auto !important; 
+                min-height: 100vh !important;
+                overflow-y: auto !important; 
+                overflow-x: hidden !important;
+                display: block !important;
+            }
+
+            .dashboard-animalx {
+                display: flex !important;
+                flex-direction: column !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            /*  CABEÇALHO E FERRAMENTAS */
+            .header-animalx {
+                padding: 15px !important;
+            }
+
+            .toolbar-animalx {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important;
+                padding: 10px 15px !important;
+                height: auto !important;
+            }
+
+            /* CORRIGIR OS BOTÕES  */
+            .toolbar-esq {
+                display: flex !important;
+                flex-wrap: wrap !important; /* Em vez de scroll horizontal, os botões descem de linha se não couberem */
+                gap: 8px !important;
+                justify-content: center !important;
+            }
+
+            .btn-filtro {
+                flex: 1 1 auto !important; /* Deixa o botão crescer ou encolher */
+                white-space: normal !important; /* Permite que o texto se divida em 2 linhas */
+                text-align: center !important;
+                padding: 8px 12px !important;
+                height: auto !important;
+                font-size: 0.9rem !important;
+            }
+
+            /* 5. MENUS DROPDOWN E PESQUISA */
+            .toolbar-centro, .toolbar-dir {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                gap: 10px !important;
+            }
+
+            .toolbar-dir .dropdown-multi, .toolbar-dir .btn-dropdown {
+                width: 100% !important;
+                height: auto !important;
+                white-space: normal !important;
+            }
+
+            /* MAPA */
+            .main-animalx {
+                display: flex !important;
+                flex-direction: column !important;
+                height: auto !important;
+            }
+
+            #mapa-container {
+                width: 100% !important;
+                height: 50vh !important; /* O mapa ocupa metade do ecrã */
+                min-height: 350px !important;
+                position: relative !important;
+                order: 1 !important;
+                z-index: 1 !important;
+            }
+
+            /* 7. LINHA DO TEMPO E RESULTADOS  */
+            .sidebar-animalx {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                height: auto !important;
+                order: 2 !important;
+                overflow: visible !important;
+            }
+
+            .timeline-container {
+                padding: 20px 15px !important;
+            }
+
+            #lista-preview {
+                height: auto !important;
+                overflow: visible !important; /* A própria página faz scroll, a lista já não precisa de ter barra lateral interna */
+                padding: 10px 15px 30px 15px !important;
+            }
+           /* --- CORREÇÃO DOS POPUPS --- */
+            
+            
+            .leaflet-popup {
+                width: 280px !important; 
+                margin-bottom: 15px !important;
+            }
+            .leaflet-popup-content-wrapper {
+                padding: 0 !important;
+                border-radius: 12px !important;
+                background: transparent !important; 
+                box-shadow: none !important;
+                overflow: visible !important;
+            }
+            
+          
+            .leaflet-popup-content {
+                margin: 0 !important;
+                width: 280px !important;
+                max-height: 260px !important; 
+                overflow-y: auto !important; 
+                overflow-x: hidden !important;
+                background: white !important;
+                border-radius: 8px !important;
+                box-shadow: 0 3px 14px rgba(0,0,0,0.4) !important;
+            }
+            
+            .cartao-popup {
+                display: block !important; 
+                width: 100% !important;
+            }
+            
+            /* A Caixa da Imagem mais pequenina */
+            .cartao-esquerda {
+                width: 100% !important;
+                height: 100px !important; 
+                border: none !important;
+                background-color: transparent !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* A Imagem / Logótipo */
+            .cartao-esquerda img, .cartao-img, .cartao-img-logo {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important; 
+                padding: 0 !important;
+                margin: 0 !important;
+                border-radius: 8px 8px 0 0 !important; 
+                display: block !important;
+            }
+            
+
+            .cartao-direita {
+                width: 100% !important;
+                padding: 10px !important;
+                box-sizing: border-box !important;
+                display: block !important;
+            }
+            
+            .cartao-direita h2 {
+                font-size: 1rem !important;
+                margin: 0 0 2px 0 !important;
+            }
+            
+            .cartao-direita h4.cientifico {
+                font-size: 0.85rem !important;
+                margin: 0 0 6px 0 !important;
+                color: #555 !important;
+            }
+            
+            .cartao-direita ul {
+                padding-left: 0 !important;
+                list-style: none !important; 
+                margin: 0 0 10px 0 !important;
+            }
+            
+            .cartao-direita ul li {
+                font-size: 0.8rem !important; /* Texto mais compacto */
+                margin-bottom: 3px !important;
+                line-height: 1.2 !important;
+            }
+            
+         
+            /* Botão de fechar */
+            .leaflet-popup-close-button {
+                background-color: #2b0e3b !important; 
+                color: white !important; 
+                border-radius: 50% !important;
+                width: 26px !important;
+                height: 26px !important;
+                line-height: 26px !important;
+                text-align: center !important;
+                top: -12px !important; 
+                right: -12px !important; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.5) !important;
+                z-index: 9999 !important;
+                font-size: 16px !important;
+                border: 2px solid white !important; 
+            }
+        }
+
+        /* --- CORREÇÃO DO POPUP DESKTOP (TEXTOS LONGOS) --- */
+
+        @media (min-width: 769px) {
+            
+            /* 1. Dar uma largura panorâmica ao balão para caber tudo bem */
+            .leaflet-popup {
+                width: 500px !important; /* Balão bem mais largo */
+            }
+            .leaflet-popup-content {
+                width: 500px !important;
+                max-height: 380px !important;
+                overflow: hidden !important; 
+                margin: 0 !important;
+            }
+            
+            /* 2. O cartão ganha dimensões fixas */
+            .cartao-popup {
+                display: flex !important;
+                height: 320px !important; 
+                width: 100% !important;
+            }
+
+            /* 3. Lado da Imagem: Controlado e sem cortes */
+            .cartao-esquerda {
+                width: 45% !important; /* Dá quase metade do balão à imagem */
+                height: 100% !important;
+                background-color: #f8f8f8 !important; /* Um fundo cinza super claro para as fotos encaixarem bem */
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .cartao-esquerda img, .cartao-img, .cartao-img-logo {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important; /* A MAGIA: Garante que a imagem/logo se vê SEMPRE por inteiro */
+                padding: 15px !important; /* Dá um respiro para o ícone não bater nas bordas */
+                box-sizing: border-box !important;
+            }
+
+            /* 4. Lado do Texto: Com scroll alinhado */
+            .cartao-direita {
+                width: 55% !important; /* O texto fica com o resto do espaço */
+                height: 100% !important;
+                overflow-y: auto !important; 
+                padding: 15px 20px 25px 15px !important; /* Topo, Direita, Fundo, Esquerda */
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            
+            
+            /* Scrollbar elegante */
+            .cartao-direita::-webkit-scrollbar {
+                width: 6px;
+            }
+            .cartao-direita::-webkit-scrollbar-thumb {
+                background: #6D4C8D; 
+                border-radius: 4px;
+            }
+            .cartao-direita::-webkit-scrollbar-track {
+                background: #f1f1f1; 
+            }
+        }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Mapa ANIMALx</title>
+        
+        
+    </head>
+    <body>
+        <!-- ECRÃ DE CARREGAMENTO -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p class="loading-text">A carregar o mapa histórico...</p>
+        </div>
+        <div class="dashboard-animalx">
+            <!-- 1. Cabeçalho -->
+            <header class="header-animalx">
+                <div class="header-texto">
+                    <h1>Animais de Lisboa</h1>
+                    <p>Explore a história animal de Lisboa através dos seus espaços e representações espalhados pela cidade, bem como dos contributos de ciência cidadã.</p>
+                </div>
+                <img src="images/logo_completo_preto .png" alt="Logótipo do Projeto" class="logo-canto-direito">
+            </header>
+
+            <!-- 2. Barra de Ferramentas Unificada -->
+            <section class="toolbar-animalx">
+            <div class="toolbar-esq">
+                    <button class="btn-filtro ativo" data-filtro="todos">
+                        <span>Todos</span>
+                    </button>
+                    <button class="btn-filtro" data-filtro="ANIMALx Espaços">
+                        <span>Espaços</span> 
+                        <img src="images/marcadores_svg/pin_espaços.svg" class="icone-legenda" alt="Espaços">
+                    </button>
+                    <button class="btn-filtro" data-filtro="ANIMALx Representações">
+                        <span>Representações</span> 
+                        <img src="images/marcadores_svg/pin_representacoes.svg" class="icone-legenda" alt="Representações">
+                    </button>
+                    <button class="btn-filtro" data-filtro="Registos obtidos através da Ação de Ciência Cidadã">
+                        <span>Ciência Cidadã</span> 
+                        <img src="images/marcadores_svg/pin_ciencia_cidada.svg" class="icone-legenda" alt="Ciência Cidadã">
+                    </button>
+                </div>
+                <div class="toolbar-centro">
+                    <input type="text" id="pesquisa-especie" placeholder="Pesquisar espécie (ex: Cão, Cavalo)...">
+                </div>
+                <div class="toolbar-dir">
+                    <!-- Dropdown Multiseleção Tipologia -->
+                    <div class="dropdown-multi" id="dd-tipologia">
+                        <button class="btn-dropdown">Todas as Tipologias</button>
+                        <div class="dropdown-conteudo">
+                            <label class="opcao-master selecionado">
+                                <input type="checkbox" value="todos" checked> 
+                                <span class="texto-filtro">Todas as Tipologias</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Consumo"> 
+                                <span class="texto-filtro">Consumo</span> 
+                                <img src="images/marcadores_svg/icone_consumo_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Selvage"> 
+                                <span class="texto-filtro">Selvagem</span> 
+                                <img src="images/marcadores_svg/icone_selvagem_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Companhia"> 
+                                <span class="texto-filtro">Companhia</span> 
+                                <img src="images/marcadores_svg/icone_companhia_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Trabalho"> 
+                                <span class="texto-filtro">Trabalho</span> 
+                                <img src="images/marcadores_svg/icone_trabalho_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Exposição"> 
+                                <span class="texto-filtro">Exposição e Espetáculo</span> 
+                                <img src="images/marcadores_svg/icone_exposiçãoeespetaculo_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Conhecimento"> 
+                                <span class="texto-filtro">Conhecimento e Saúde</span> 
+                                <img src="images/marcadores_svg/icone_conhecimentoesaude_menu.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Simbólico"> 
+                                <span class="texto-filtro">Simbólico</span> 
+                                <img src="images/marcadores_svg/icone_simbolico_menu.svg" class="icone-legenda">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dropdown Multiseleção Séculos -->
+                    <div class="dropdown-multi" id="dd-seculo">
+                        <button class="btn-dropdown">Todos os Séculos</button>
+                        <div class="dropdown-conteudo">
+                            <label class="opcao-master selecionado">
+                                <input type="checkbox" value="todos" checked> 
+                                <span class="texto-filtro">Todos os Séculos</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="12"> 
+                                <span class="texto-filtro">Século XII</span>
+                                <img src="images/marcadores_svg/seculo_12.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="13"> 
+                                <span class="texto-filtro">Século XIII</span>
+                                <img src="images/marcadores_svg/seculo_13.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="14"> 
+                                <span class="texto-filtro">Século XIV</span>
+                                <img src="images/marcadores_svg/seculo_14.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="15"> 
+                                <span class="texto-filtro">Século XV</span>
+                                <img src="images/marcadores_svg/seculo_15.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="16"> 
+                                <span class="texto-filtro">Século XVI</span>
+                                <img src="images/marcadores_svg/seculo_16.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="17"> 
+                                <span class="texto-filtro">Século XVII</span>
+                                <img src="images/marcadores_svg/seculo_17.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="18"> 
+                                <span class="texto-filtro">Século XVIII</span>
+                                <img src="images/marcadores_svg/seculo_18.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="19"> 
+                                <span class="texto-filtro">Século XIX</span>
+                                <img src="images/marcadores_svg/seculo_19.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="20"> 
+                                <span class="texto-filtro">Século XX</span>
+                                <img src="images/marcadores_svg/seculo_20.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="21"> 
+                                <span class="texto-filtro">Século XXI</span>
+                                <img src="images/marcadores_svg/seculo_21.svg" class="icone-legenda">
+                            </label>
+                            <label>
+                                <input type="checkbox" class="filtro-check" value="Indeterminada"> 
+                                <span class="texto-filtro">Indeterminada</span>
+                                <img src="images/marcadores_svg/indeterminada.svg" class="icone-legenda">
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="btn-limpar-filtros" class="btn-limpar-filtros" title="Limpar todas as pesquisas">
+                        <i class="fas fa-undo-alt"></i> Limpar
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. Conteúdo Principal (Mapa + Sidebar) -->
+            <main class="main-animalx">
+                <div id="mapa-container">
+                    <!-- O teu mapa Leaflet entra aqui -->
+                    <div id="map"></div> 
+                    
+                    <!-- NOVO WIDGET TEMPORAL FLUTUANTE -->
+                    <div class="widget-temporal-flutuante colapsado" id="widget-tempo">
+                        <button class="btn-toggle-tempo" id="btn-toggle-tempo" title="Mostrar/Esconder Linha do Tempo">
+                            <i class="fas fa-clock"></i> 
+                        </button>
+                        <div class="timeline-conteudo">
+                            <div class="timeline-header">
+                                <button id="btn-play" class="btn-play">▶</button>
+                                <div class="timeline-labels">
+                                    <span class="extremo-ano">Séc. XII</span>
+                                    <span id="ano-display">Cronologia</span>
+                                    <span class="extremo-ano">Séc. XXI</span>
+                                </div>
+                            </div>
+                            <input type="range" id="slider-ano" min="1099" max="2026" value="1099" step="1">
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <aside class="sidebar-animalx">
+                    
+                    <!-- NOVO MENU DE CARTOGRAFIA TEM DE ESTAR AQUI -->
+                    <div class="painel-cartografia">
+                        <h3 class="titulo-camadas" id="toggle-cartografia" style="cursor: pointer; justify-content: space-between;">
+                            <span><i class="fas fa-layer-group"></i> Cartografia Histórica</span>
+                            <i class="fas fa-chevron-down" id="seta-cartografia"></i>
+                        </h3>
+                        <!-- A classe 'escondido' faz com que inicie fechado por defeito -->
+                        <div id="camadas-leaflet-aqui" class="escondido"></div> 
+                    </div>
+
+                    <!-- Linha do Tempo integrada na Sidebar (Apaga isto se já moveste para o mapa) -->
+                    <!-- Lista de Previews -->
+                    <h3 class="titulo-sidebar">Resultados:</h3>
+                    <div id="lista-preview" class="lista-preview">
+                        <!-- Os cartões de preview vão aparecer aqui futuramente -->
+                    </div>
+                </aside>
+            </main>
+        </div>
+        
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.photon.js"></script>
+        <script src="data/ANIMALxRegistos_1.js"></script>
+        <script src="https://unpkg.com/esri-leaflet"></script>
+        <!-- Carrega o plugin Esri Leaflet para suportar servidores REST -->
+        
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
+              highlightLayer.setStyle({
+                color: 'rgba(255, 255, 0, 1.00)',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: 'rgba(255, 255, 0, 1.00)',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:27, minZoom:1
+        }).setView([38.7500, -9.2300], 11);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/qgis2web/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+        // --- INÍCIO DA LÓGICA DE SIMBOLOGIA DINÂMICA ---
+        function getTipoRegistoSVG(props) {
+                    // 1. Regra mais específica primeiro (Ciência Cidadã)
+                    if (props.layer === 'Registos obtidos através da Ação de Ciência Cidadã') return 'images/marcadores_svg/pin_ciencia_cidada.svg';
+                    
+                    // 2. Regras gerais a seguir
+                    if (props.conjunto === 'ANIMALx Espaços') return 'images/marcadores_svg/pin_espaços.svg';
+                    if (props.conjunto === 'ANIMALx Representações') return 'images/marcadores_svg/pin_representacoes.svg';
+                    
+                    return ''; 
+                }
+        function getCronologiaSVG(props) {
+            if (props.primeira_d === 'Indeterminada') return 'images/marcadores_svg/indeterminada.svg';
+            const inicio = props.ano_inicio;
+            const fim = props.ano_fim;
+            if (inicio <= 1200 && fim >= 1101) return 'images/marcadores_svg/seculo_12.svg';
+            if (inicio <= 1300 && fim >= 1201) return 'images/marcadores_svg/seculo_13.svg';
+            if (inicio <= 1400 && fim >= 1301) return 'images/marcadores_svg/seculo_14.svg';
+            if (inicio <= 1500 && fim >= 1401) return 'images/marcadores_svg/seculo_15.svg';
+            if (inicio <= 1600 && fim >= 1501) return 'images/marcadores_svg/seculo_16.svg';
+            if (inicio <= 1700 && fim >= 1601) return 'images/marcadores_svg/seculo_17.svg';
+            if (inicio <= 1800 && fim >= 1701) return 'images/marcadores_svg/seculo_18.svg';
+            if (inicio <= 1900 && fim >= 1801) return 'images/marcadores_svg/seculo_19.svg';
+            if (inicio <= 2000 && fim >= 1901) return 'images/marcadores_svg/seculo_20.svg';
+            if (inicio <= 2100 && fim >= 2001) return 'images/marcadores_svg/seculo_21.svg';
+            return '';
+        }
+
+        function getTipologiaSVG(props) {
+            const tipologia = props.tipologia || '';
+            if (tipologia.includes('Consumo')) return 'images/marcadores_svg/icone_consumo.svg';
+            if (tipologia.includes('Selvage')) return 'images/marcadores_svg/icone_selvagem.svg';
+            if (tipologia.includes('Companhia')) return 'images/marcadores_svg/icone_companhia.svg';
+            if (tipologia.includes('Trabalho')) return 'images/marcadores_svg/icone_trabalho.svg';
+            if (tipologia.includes('Exposição')) return 'images/marcadores_svg/icone_exposiçãoeespetaculo.svg';
+            if (tipologia.includes('Conhecimento')) return 'images/marcadores_svg/icone_conhecimentoesaude.svg';
+            if (tipologia.includes('Simbólico')) return 'images/marcadores_svg/icone_simbolico.svg';
+            return '';
+        }
+
+        function criarIconeDinamico(feature) {
+            const props = feature.properties;
+            const svgBase = getTipoRegistoSVG(props);
+            const svgMeio = getCronologiaSVG(props);
+            const svgTopo = getTipologiaSVG(props);
+
+            const htmlMarcador = `
+                <div class="marcador-composto">
+                    ${svgBase ? `<img src="${svgBase}" class="camada-base" />` : ''}
+                    ${svgMeio ? `<img src="${svgMeio}" class="camada-meio" />` : ''}
+                    ${svgTopo ? `<img src="${svgTopo}" class="camada-topo" />` : ''}
+                </div>
+            `;
+
+            return L.divIcon({
+                html: htmlMarcador,
+                className: 'custom-div-icon',
+                iconSize: [41, 41],
+                iconAnchor: [20.5, 41]
+            });
+        }
+        // --- FIM DA LÓGICA DE SIMBOLOGIA DINÂMICA ---
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // modify popup if contains media
+        function addClassToPopupIfMedia(content, popup) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var imgTd = tempDiv.querySelector('td img');
+            if (imgTd) {
+                var src = imgTd.getAttribute('src');
+                if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
+                    popup._contentNode.classList.add('media');
+                    var img = popup._contentNode.querySelector('td img');
+                    if (img) {
+                        // If already loaded (cache), update immediately
+                        if (img.complete && img.naturalHeight > 0) {
+                            popup.update();
+                        } else {
+                            img.addEventListener('load', function() {
+                                popup.update();
+                            });
+                            img.addEventListener('error', function() {
+                                popup.update();
+                            });
+                        }
+                    }
+                } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
+                    var audio = document.createElement('audio');
+                    audio.controls = true;
+                    audio.src = src;
+                    imgTd.parentNode.replaceChild(audio, imgTd);
+                    popup._contentNode.classList.add('media');
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
+                    var video = document.createElement('video');
+                    video.controls = true;
+                    video.src = src;
+                    video.style.width = "400px";
+                    video.style.height = "300px";
+                    video.style.maxHeight = "60vh";
+                    video.style.maxWidth = "60vw";
+                    imgTd.parentNode.replaceChild(video, imgTd);
+                    popup._contentNode.classList.add('media');
+                    // Aggiorna il popup quando il video carica i metadati
+                    video.addEventListener('loadedmetadata', function() {
+                        popup.update();
+                    });
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else {
+                    popup._contentNode.classList.remove('media');
+                }
+            } else {
+                popup._contentNode.classList.remove('media');
+            }
+        }
+
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+
+        // --- BOTÃO ZOOM INICIAL (HOME) ---
+        var ZoomInicialControl = L.Control.extend({
+            options: {
+                position: 'topleft' // Coloca-o no mesmo sítio do zoom, ficando imediatamente por baixo
+            },
+            onAdd: function (map) {
+                // Cria a caixa com o formato padrão do Leaflet
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control custom-zoom-home');
+                
+                // Cria o botão em si
+                var button = L.DomUtil.create('a', 'zoom-home-button', container);
+                button.href = '#';
+                button.title = 'Voltar à vista geral';
+                button.innerHTML = '<i class="fas fa-home"></i>'; // O ícone da casinha
+                
+                // O que acontece quando se clica
+                L.DomEvent.disableClickPropagation(button);
+                L.DomEvent.on(button, 'click', function(e) {
+                    L.DomEvent.preventDefault(e);
+                    // Devolve o mapa à coordenada exata e ao zoom de abertura (11)
+                    map.setView([38.7500, -9.2300], 11); 
+                });
+
+                return container;
+            }
+        });
+        map.addControl(new ZoomInicialControl());
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_CartoVoyagerLabels_0');
+        map.getPane('pane_CartoVoyagerLabels_0').style.zIndex = 400;
+        var layer_CartoVoyagerLabels_0 = L.tileLayer('https://cartodb-basemaps-a.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
+            pane: 'pane_CartoVoyagerLabels_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 27,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_CartoVoyagerLabels_0;
+        map.addLayer(layer_CartoVoyagerLabels_0);
+        function pop_ANIMALxRegistos_1(feature, layer) {
+            var props = feature.properties;
+
+            console.log("Dados do Ponto:", props.nome_comum, props);
+
+            // --- 1. EFEITO HOVER (Tooltip da primeira imagem) ---
+            var textoHover = `
+                <div class="tooltip-animalx">
+                    <strong>${props.nome_comum || 'Desconhecido'}</strong><br>
+                    <span>${props.tipologia || ''} | ${props.primeira_d || ''}</span>
+                </div>
+            `;
+            // Ativa o balão ao passar o rato
+            layer.bindTooltip(textoHover, { direction: 'top', offset: [0, -20], className: 'estilo-tooltip' });
+
+            // --- 2. EFEITO CLIQUE (Popup da segunda imagem) ---
+            
+            // Lógica condicional para as Datas
+            var textoData = "";
+                if (props.primeira_d === 'Indeterminada') {
+                    textoData = "Indeterminada";
+                } else if (props.ano_inicio === props.ano_fim) {
+                    textoData = props.ano_inicio || ''; // Se forem iguais, mostra só uma vez
+                } else {
+                    textoData = (props.ano_inicio || '') + " - " + (props.ano_fim || '');
+                }
+
+        // 1. Definição da imagem ou do logo de fallback
+            var temImagem = props.caminho_fo && String(props.caminho_fo).trim() !== "";
+                        
+            var caminhoFinal = temImagem 
+                ? "images/" + String(props.caminho_fo).replace(/[\\/:]/g, '_').trim() 
+                : "images/icone_espaços.png";
+
+            
+            var classeImagem = (props.caminho_fo && String(props.caminho_fo).trim() !== "") ? "cartao-img" : "cartao-img-logo";
+
+
+            // 2. A estrutura do Cartão de Apresentação
+            var textoPopup = `
+                <div class="cartao-popup">
+                    <div class="cartao-esquerda">
+                        <img src="${caminhoFinal}" class="${classeImagem}" loading="lazy" alt="Imagem">
+                    </div>
+                    <div class="cartao-direita">
+                        <h2>${props.nome_comum || 'Desconhecido'}</h2>
+                        <h4 class="cientifico">${props.nome_cient || ''}</h4>
+                        
+                       <ul class="lista-dados">
+                            <li><strong>Tipologia:</strong> ${props.tipologia || ''}</li>
+                            <li><strong>Data:</strong> ${textoData}</li>
+                            <li><strong>Localização:</strong> ${props.localizaca || ''}</li>
+                            <li><strong>Descrição:</strong> ${props.descricao || ''}</li>
+                        </ul>
+                                              
+                    </div>
+                </div>
+            `;
+            layer.bindPopup(textoPopup, { maxWidth: 720, minWidth: 620 });;
+
+            layer.on('popupopen', function(e) {
+                var img = e.popup._contentNode.querySelector('.cartao-img');
+                if (img) {
+                    if (img.complete && img.naturalHeight > 0) {
+                        e.popup.update();
+                    } else {
+                        img.addEventListener('load', function() { e.popup.update(); });
+                        img.addEventListener('error', function() { e.popup.update(); });
+                    }
+                }
+            });
+        }
+
+    // --- INÍCIO CLUSTER E CAMADA GEOJSON ---
+            map.createPane('pane_ANIMALxRegistos_1');
+            map.getPane('pane_ANIMALxRegistos_1').style.zIndex = 402;
+            map.getPane('pane_ANIMALxRegistos_1').style['mix-blend-mode'] = 'normal';
+
+            // 1. Inicializar o Grupo de Clusters (A Teia de Aranha)
+            var marcadoresCluster = L.markerClusterGroup({
+                maxClusterRadius: 40,        
+                spiderfyOnMaxZoom: true,     
+                showCoverageOnHover: false,  
+                zoomToBoundsOnClick: true    
+            });
+
+            // 2. Carregar os dados (usando a variável json_ANIMALxRegistos_1 que o qgis2web gerou)
+            var layer_ANIMALxRegistos_1 = L.geoJSON(json_ANIMALxRegistos_1, {
+                pane: 'pane_ANIMALxRegistos_1',
+                onEachFeature: pop_ANIMALxRegistos_1, // Mantém os popups antigos a funcionar por agora
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        icon: criarIconeDinamico(feature)
+                    });
+                }
+            });
+
+            // 3. Adicionar ao mapa
+            marcadoresCluster.addLayer(layer_ANIMALxRegistos_1);
+            bounds_group.addLayer(marcadoresCluster);
+            map.addLayer(marcadoresCluster);
+
+            // --- INÍCIO DO MENU DE FILTROS ---
+                           
+           // --- INÍCIO DA LIGAÇÃO AO NOVO DASHBOARD ---
+            var filtroRegistoAtivo = 'todos';
+
+            // 1. Ouvintes para os Botões de Tipo de Registo (Topo Esquerda)
+            document.querySelectorAll('.btn-filtro').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // Remove estado visual ativo de todos
+                    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('ativo'));
+                    // Fica ativo o que foi clicado
+                    this.classList.add('ativo');
+                    // Regista o filtro e atualiza o mapa
+                    filtroRegistoAtivo = this.getAttribute('data-filtro');
+                    atualizarFiltros();
+                });
+            });
+
+            // 2. Ouvinte para a Pesquisa de Espécie (Centro)
+            document.getElementById('pesquisa-especie').addEventListener('input', atualizarFiltros);
+
+            // 3. Ouvintes para os Dropdowns (Direita)
+
+            function configurarDropdownMulti(idContainer) {
+                var container = document.getElementById(idContainer);
+                var btn = container.querySelector('.btn-dropdown');
+                var conteudo = container.querySelector('.dropdown-conteudo');
+                var opcaoMaster = container.querySelector('.opcao-master');
+                var checkMaster = opcaoMaster.querySelector('input');
+                var checksSecundarios = container.querySelectorAll('.filtro-check');
+
+                // 1. Abrir/Fechar
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Fecha outros que estejam abertos
+                    document.querySelectorAll('.dropdown-conteudo').forEach(c => {
+                        if (c !== conteudo) c.classList.remove('aberto');
+                    });
+                    conteudo.classList.toggle('aberto');
+                });
+
+                conteudo.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Impede que o clique nas opções feche o menu
+                });
+
+                // 2. Lógica da opção "Todos"
+                opcaoMaster.addEventListener('change', function() {
+                    if (checkMaster.checked) {
+                        opcaoMaster.classList.add('selecionado');
+                        checksSecundarios.forEach(opt => {
+                            opt.checked = false;
+                            opt.parentElement.classList.remove('selecionado');
+                        });
+                        btn.textContent = opcaoMaster.textContent.trim();
+                        atualizarFiltros();
+                    } else if (Array.from(checksSecundarios).filter(o => o.checked).length === 0) {
+                        checkMaster.checked = true; // Previne ficar tudo vazio
+                    }
+                });
+
+                // 3. Lógica das restantes opções
+                checksSecundarios.forEach(opt => {
+                    opt.addEventListener('change', function() {
+                        var label = opt.parentElement;
+                        if (opt.checked) {
+                            label.classList.add('selecionado');
+                            checkMaster.checked = false;
+                            opcaoMaster.classList.remove('selecionado');
+                        } else {
+                            label.classList.remove('selecionado');
+                        }
+
+                        var ativas = Array.from(checksSecundarios).filter(o => o.checked);
+                        if (ativas.length === 0) {
+                            checkMaster.checked = true;
+                            opcaoMaster.classList.add('selecionado');
+                            btn.textContent = opcaoMaster.textContent.trim();
+                        } else if (ativas.length === 1) {
+                            btn.textContent = ativas[0].parentElement.textContent.trim();
+                        } else {
+                            btn.textContent = ativas.length + " Selecionados"; // Altera o texto do botão
+                        }
+                        atualizarFiltros();
+                    });
+                });
+            }
+
+            configurarDropdownMulti('dd-tipologia');
+            configurarDropdownMulti('dd-seculo');
+
+            // Fechar menus ao clicar no resto da página
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.dropdown-conteudo').forEach(c => c.classList.remove('aberto'));
+            });
+
+
+    // 4. Lógica de Interação da Linha do Tempo (Sidebar)
+            var slider = document.getElementById('slider-ano');
+            var display = document.getElementById('ano-display');
+            var btnPlay = document.getElementById('btn-play');
+            var timerPlay;
+            var aTocar = false;
+
+            var btnToggleTempo = document.getElementById('btn-toggle-tempo');
+            var widgetTempo = document.getElementById('widget-tempo');
+            
+            btnToggleTempo.addEventListener('click', function() {
+                widgetTempo.classList.toggle('colapsado');
+                
+                // Muda a cor do relógio para indicar se está ativo
+                if(widgetTempo.classList.contains('colapsado')) {
+                    btnToggleTempo.style.color = '#6c75b7';
+                } else {
+                    btnToggleTempo.style.color = '#3a4164';
+                }
+            });
+
+            slider.addEventListener('input', function() {
+                if (this.value == 1099) {
+                    display.textContent = "Cronologia";
+                } else {
+                    display.textContent = "Ano: " + this.value;
+                }
+                atualizarFiltros(); // VOLTA A LIGAR AQUI
+            });
+
+            btnPlay.addEventListener('click', function() {
+                if (aTocar) {
+                    clearInterval(timerPlay);
+                    this.textContent = "▶";
+                    aTocar = false;
+                } else {
+                    this.textContent = "⏸";
+                    aTocar = true;
+                    if (slider.value == 1099 || slider.value == 2026) {
+                        slider.value = 1100;
+                    }
+                    timerPlay = setInterval(function() {
+                        var valAtual = parseInt(slider.value);
+                        if (valAtual >= 2026) {
+                            // 1. Pára a animação
+                            clearInterval(timerPlay);
+                            btnPlay.textContent = "▶";
+                            aTocar = false;
+                            
+                            
+                            slider.value = 1099;
+                            display.textContent = "Cronologia";
+                            atualizarFiltros(); 
+                            
+                        } else {
+                            // Continua a avançar normalmente
+                            slider.value = valAtual + 5;
+                            display.textContent = "Ano: " + slider.value;
+                            atualizarFiltros(); 
+                        }
+                    }, 300);
+                }
+            });
+
+        function getCategoriaRegisto(props) {
+                if (props.layer === 'Registos obtidos através da Ação de Ciência Cidadã') return 'Registos obtidos através da Ação de Ciência Cidadã';
+                if (props.conjunto === 'ANIMALx Espaços') return 'ANIMALx Espaços';
+                if (props.conjunto === 'ANIMALx Representações') return 'ANIMALx Representações';
+                return 'Outro';
+            }
+
+            // --- BOTÃO LIMPAR FILTROS ---
+            var btnLimpar = document.getElementById('btn-limpar-filtros');
+            if (btnLimpar) {
+                btnLimpar.addEventListener('click', function() {
+                    // 1. Reset da Barra de Texto
+                    document.getElementById('pesquisa-especie').value = '';
+
+                    // 2. Reset dos Botões de Categoria
+                    filtroRegistoAtivo = 'todos';
+                    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('ativo'));
+                    document.querySelector('.btn-filtro[data-filtro="todos"]').classList.add('ativo');
+
+                    // 3. Reset dos Menus Dropdown
+                    function fazerResetDropdown(idContainer) {
+                        var container = document.getElementById(idContainer);
+                        var btn = container.querySelector('.btn-dropdown');
+                        var opcaoMaster = container.querySelector('.opcao-master');
+                        var checkMaster = opcaoMaster.querySelector('input');
+                        var checksSecundarios = container.querySelectorAll('.filtro-check');
+                        
+                        checkMaster.checked = true;
+                        opcaoMaster.classList.add('selecionado');
+                        
+                        checksSecundarios.forEach(opt => {
+                            opt.checked = false;
+                            opt.parentElement.classList.remove('selecionado');
+                        });
+                        btn.textContent = opcaoMaster.textContent.trim();
+                    }
+                    fazerResetDropdown('dd-tipologia');
+                    fazerResetDropdown('dd-seculo');
+
+                    // 4. Reset do Slider Temporal
+                    var sliderTemp = document.getElementById('slider-ano');
+                    var displayTemp = document.getElementById('ano-display');
+                    if (sliderTemp && displayTemp) {
+                        sliderTemp.value = 1099;
+                        displayTemp.textContent = "Todos os Anos";
+                    }
+
+                    // 5. Atualizar o Mapa
+                    atualizarFiltros();
+                });
+            }
+
+            // 5. Função Central de Filtragem
+            function atualizarFiltros() {
+                var termoPesquisa = document.getElementById('pesquisa-especie').value.toLowerCase().trim();
+                var tipologiasSelecionadas = Array.from(document.querySelectorAll('#dd-tipologia .filtro-check:checked')).map(cb => cb.value);
+                var seculosSelecionados = Array.from(document.querySelectorAll('#dd-seculo .filtro-check:checked')).map(cb => cb.value);
+                var anoSlider = parseInt(document.getElementById('slider-ano').value);
+
+                marcadoresCluster.clearLayers();
+
+                // --- 1. FILTRAGEM GERAL ---
+                var featuresGerais = json_ANIMALxRegistos_1.features.filter(function(feature) {
+                    var props = feature.properties;
+                    
+                    var nomeComum = props.nome_comum ? String(props.nome_comum).toLowerCase() : '';
+                    if (termoPesquisa !== "" && !nomeComum.includes(termoPesquisa)) return false;
+
+                    var categoriaPonto = getCategoriaRegisto(props);
+                    if (filtroRegistoAtivo !== 'todos' && categoriaPonto !== filtroRegistoAtivo) return false;
+                    
+                    if (tipologiasSelecionadas.length > 0) {
+                        var tipologia = props.tipologia || '';
+                        if (!tipologiasSelecionadas.some(t => tipologia.includes(t))) return false;
+                    }
+
+                    if (seculosSelecionados.length > 0) {
+                        var inicio = props.ano_inicio;
+                        var fim = props.ano_fim;
+                        var primeira_d = props.primeira_d;
+                        var passaSeculo = seculosSelecionados.some(sec => {
+                            if (sec === 'Indeterminada') return primeira_d === 'Indeterminada';
+                            var s = parseInt(sec);
+                            if (s === 12) return (inicio <= 1200 && fim >= 1101);
+                            if (s === 13) return (inicio <= 1300 && fim >= 1201);
+                            if (s === 14) return (inicio <= 1400 && fim >= 1301);
+                            if (s === 15) return (inicio <= 1500 && fim >= 1401);
+                            if (s === 16) return (inicio <= 1600 && fim >= 1501);
+                            if (s === 17) return (inicio <= 1700 && fim >= 1601);
+                            if (s === 18) return (inicio <= 1800 && fim >= 1701);
+                            if (s === 19) return (inicio <= 1900 && fim >= 1801);
+                            if (s === 20) return (inicio <= 2000 && fim >= 1901);
+                            if (s === 21) return (inicio <= 2100 && fim >= 2001);
+                            return false;
+                        });
+                        if (!passaSeculo) return false;
+                    }
+                    return true;
+                });
+
+                // --- 2. REMOVER DUPLICADOS E MISTURAR ---
+                var featuresUnicas = [];
+                var chavesVistas = new Set();
+
+                featuresGerais.forEach(function(f) {
+                    var props = f.properties;
+                    var chaveUnica = (props.nome_comum || '') + "|" + (props.localizaca || '');
+                    if (!chavesVistas.has(chaveUnica)) {
+                        chavesVistas.add(chaveUnica);
+                        featuresUnicas.push(f);
+                    }
+                });
+
+                var grupos = { 'ANIMALx Espaços': [], 'ANIMALx Representações': [], 'Registos obtidos através da Ação de Ciência Cidadã': [], 'Outro': [] };
+                featuresUnicas.forEach(function(f) {
+                    grupos[getCategoriaRegisto(f.properties) || 'Outro'].push(f);
+                });
+
+                var featuresMisturadas = [];
+                var categorias = Object.keys(grupos);
+                var haMaisPontos = true;
+                while (haMaisPontos) {
+                    haMaisPontos = false;
+                    categorias.forEach(function(cat) {
+                        if (grupos[cat].length > 0) {
+                            featuresMisturadas.push(grupos[cat].shift());
+                            haMaisPontos = true;
+                        }
+                    });
+                }
+
+                // --- 3. CRIAR CAMADA BASE ---
+                var camadaMestre = L.geoJSON({ type: "FeatureCollection", features: featuresMisturadas }, {
+                    onEachFeature: pop_ANIMALxRegistos_1,
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, { icon: criarIconeDinamico(feature) });
+                    }
+                });
+
+                // --- 4. RENDERIZAR LISTA (Ignora ano) E MAPA (Lê o ano) ---
+                var listaContainer = document.getElementById('lista-preview');
+                listaContainer.innerHTML = ''; 
+                window.camadasAtuais = {};
+
+                camadaMestre.eachLayer(function(layer) {
+                    var props = layer.feature.properties;
+                    var layerId = camadaMestre.getLayerId(layer);
+                    window.camadasAtuais[layerId] = layer;
+
+                    var temImagem = props.caminho_fo && String(props.caminho_fo).trim() !== "";
+                    var caminhoFinal = temImagem ? "images/" + String(props.caminho_fo).replace(/[\\/:]/g, '_').trim() : "images/icone_espaços.png";
+                    var classeImagem = temImagem ? "preview-img-foto" : "preview-img-logo";
+                    
+                    var textoData = props.primeira_d === 'Indeterminada' ? "Indeterminada" : (props.ano_inicio === props.ano_fim ? (props.ano_inicio || '') : (props.ano_inicio || '') + " - " + (props.ano_fim || ''));
+                    var badgeTexto = getCategoriaRegisto(props).replace('ANIMALx ', '').replace('Registos obtidos através da Ação de ', '');
+
+                    listaContainer.insertAdjacentHTML('beforeend', `
+                        <div class="card-preview" onclick="focarAbrirPopup(${layerId})">
+                            <div class="preview-img-container">
+                                <img src="${caminhoFinal}" class="${classeImagem}" loading="lazy">
+                            </div>
+                            <div class="preview-content">
+                                <h4>${props.nome_comum || 'Desconhecido'}</h4>
+                                <div class="preview-meta-top"><span class="badge-tipo">${badgeTexto}</span></div>
+                                <div class="preview-meta-bottom">
+                                    <span>${props.tipologia || 'Sem tipologia'}</span>
+                                    <span class="separador">|</span>
+                                    <span>${textoData}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+
+                    var passaTempo = true;
+                    if (anoSlider > 1099) {
+                        if (props.primeira_d === 'Indeterminada') {
+                            passaTempo = false;
+                        } else {
+                            var strInicio = String(props.pd_QGIS || "");
+                            var strFim = String(props.ud_QGIS || "");
+                            var inicioSlider = strInicio.match(/\d{4}/) ? parseInt(strInicio.match(/\d{4}/)[0]) : (props.ano_inicio ? parseInt(props.ano_inicio) : 0);
+                            var fimSlider = strFim.match(/\d{4}/) ? parseInt(strFim.match(/\d{4}/)[0]) : (props.ano_fim ? parseInt(props.ano_fim) : 9999);
+                            
+                            if (!(anoSlider >= inicioSlider && anoSlider <= fimSlider)) passaTempo = false;
+                        }
+                    }
+                    if (passaTempo) marcadoresCluster.addLayer(layer);
+                });
+            }
+
+            atualizarFiltros();
+
+            // --- FUNÇÃO PARA ABRIR POPUP A PARTIR DA SIDEBAR ---
+            window.focarAbrirPopup = function(layerId) {
+                var layer = window.camadasAtuais[layerId];
+                if (layer) {
+                    if (!marcadoresCluster.hasLayer(layer)) {
+                        marcadoresCluster.addLayer(layer);
+                    }
+                    marcadoresCluster.zoomToShowLayer(layer, function() {
+                        layer.openPopup();
+                    });
+                }
+            };
+           
+
+            // --- CARREGAR CARTOGRAFIA HISTÓRICA VIA LOCAL ---
+
+            if (!map.getPane('pane_historico')) {
+                map.createPane('pane_historico');
+                map.getPane('pane_historico').style.zIndex = 401;
+                map.getPane('pane_historico').style.mixBlendMode = 'multiply';
+            }
+
+            // --- 2A. TINOCO (1650) ---
+            var limitesTinoco = [
+                [38.702778723, -9.152608446], 
+                [38.721267178, -9.113083449]
+            ];
+            var cartografiaTinocoLocal = L.imageOverlay('cartografia/cartografiaTinoco.png', limitesTinoco, {
+                opacity: 0.7,
+                pane: 'pane_historico'
+            });
+
+            // --- 2B. PLANTA TOPONÍMICA ---
+            var limitesToponimica = [
+                [38.677890419, -9.220014269], 
+                [38.751844237, -9.061914281] 
+            ];
+            var cartografiaToponimicaLocal = L.imageOverlay('cartografia/plantaToponimica.png', limitesToponimica, {
+                opacity: 0.7,
+                pane: 'pane_historico'
+            });
+
+            // --- 2C. FOLQUE (1856-1858) ---
+            var limitesFolque = [
+                [38.677890419, -9.220014269], 
+                [38.751844237, -9.061914281] 
+            ];
+            var cartografiaFolqueLocal = L.imageOverlay('cartografia/cartografiaFolque.png', limitesFolque, {
+                opacity: 0.7,
+                pane: 'pane_historico'
+            });
+
+
+
+        // --- 3. MENU DE CONTROLO (MOVIDO PARA A SIDEBAR) ---
+            var camadasSobreposicao = {
+                "Planta da Cidade de Lisboa delineada por João Nunes Tinoco (1650)": cartografiaTinocoLocal,
+                "Planta Topográfica da Cidade de Lisboa (1758)": cartografiaToponimicaLocal,
+                "Carta Topográfica da Cidade de Lisboa delineada por Filipe Folque (1856-1858)": cartografiaFolqueLocal
+            };
+
+            var controloCamadas = L.control.layers(null, camadasSobreposicao, {
+                collapsed: false
+            });
+
+            controloCamadas.addTo(map);
+
+            // O Truque de Magia (Com Rede de Segurança)
+            var divDestino = document.getElementById('camadas-leaflet-aqui');
+            
+            if (divDestino) {
+                divDestino.appendChild(controloCamadas.getContainer());
+            } else {
+                console.error("FALHA: Não encontrei a <div id='camadas-leaflet-aqui'> no HTML para colocar o menu!");
+            }
+
+            // --- COLAPSAR/EXPANDIR MENU DE CARTOGRAFIA ---
+            var tituloCartografia = document.getElementById('toggle-cartografia');
+            var conteudoCartografia = document.getElementById('camadas-leaflet-aqui');
+            var setaCartografia = document.getElementById('seta-cartografia');
+
+            if (tituloCartografia) {
+                tituloCartografia.addEventListener('click', function() {
+                    // Alterna entre mostrar e esconder as opções
+                    conteudoCartografia.classList.toggle('escondido');
+                    // Roda a setinha para cima ou para baixo
+                    setaCartografia.classList.toggle('aberto');
+                });
+            }
+
+            // --- ESCONDER ECRÃ DE CARREGAMENTO ---
+            window.addEventListener('load', function() {
+                var loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    // Reduz a opacidade para criar um efeito de transição suave
+                    loadingScreen.style.opacity = '0';
+                    
+                    // Remove o elemento do HTML após meio segundo (o tempo da transição)
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            });
+        </script>        
+    </body>
+</html>

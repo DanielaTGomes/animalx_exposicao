@@ -1,0 +1,1296 @@
+
+        #map {
+            background-color: #ffffff
+        }
+        html, body, #map {
+			overflow: hidden;
+        }
+        .col9{
+			height: 100%!important;
+		}
+		.col3{
+			height: 100%;
+			overflow: auto;
+		}
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background-color:#f8f8f8 !important;
+            color: #444444 !important;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .info h2 {
+            margin: 0 0 5px;
+        }
+        .leaflet-container {
+            background: #fff;
+            padding-right: 10px;
+        }
+        .leaflet-popup-scrolled {
+            border-bottom: unset!important;
+            border-top: unset!important;
+        }
+        .leaflet-popup-content{
+            max-height: 70vh;
+            max-width: 70vw;
+        }
+        .leaflet-popup-content.media{
+            width: auto!important;
+            height: auto!important;
+            overflow: auto;
+        }
+        .leaflet-popup-content th {
+            text-align: left;
+            vertical-align: top;
+            min-width: 75px;
+        }
+        .leaflet-popup-content td {
+            min-width: 75px;
+        }
+        .leaflet-popup-content td img {
+            max-height: 60vh;
+            max-width: 60vw;
+        }
+
+        .leaflet-tooltip {
+            background: none;
+            box-shadow: none;
+            border: none;
+        }
+        .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+            border: 0px;
+        }
+        .fa, .leaflet-container, a {
+            color: #444444 !important;
+        }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out,
+        .leaflet-control-locate a,
+        .leaflet-touch .leaflet-control-geocoder-icon,
+        .leaflet-control-search .search-button,
+         .leaflet-control-measure {
+            background-color: #f8f8f8 !important;
+            border-radius: 0px !important;
+            color: #444444 !important;
+        }
+        .abstract {
+            font: bold 18px 'Lucida Console', Monaco, monospace;
+            text-indent: 1px;
+            background-color: #f8f8f8 !important;
+            width: 30px !important;
+            color: #444444 !important;
+            height: 30px !important;
+            text-align: center !important;
+            line-height: 30px !important;
+        }
+        .abstractUncollapsed {
+            padding: 6px 8px;
+            font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+            background-color:#f8f8f8 !important;
+            color: #444444 !important;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            max-width: 40%;
+        }
+        .leaflet-control {
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4)!important;
+            border-radius: 4px;
+        }
+        .leaflet-touch .leaflet-control-layers,
+        .leaflet-touch .leaflet-bar,
+        .leaflet-control-search,
+        .leaflet-control-measure {
+            border: 3px solid rgba(255,255,255,.4) !important;
+        }
+        .leaflet-control-attribution a {
+            color: #0078A8 !important;
+        }
+        .leaflet-control-scale-line {
+            border: 2px solid #f8f8f8 !important;
+            border-top: none !important;
+            color: black !important;
+        }
+        .leaflet-control-search .search-button {
+            width: 30px !important;
+            height: 30px !important;
+            font-size: 13px !important;
+            text-align: center !important;
+            cursor: pointer;
+        }
+        .search-button.fa.fa-binoculars{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .leaflet-control-measure .leaflet-control {
+            width: 30px !important;
+            height: 30px !important;
+        }
+        .leaflet-container .leaflet-control-search{
+            background: none !important;
+        }
+        .leaflet-control-search .search-input {
+            margin: 0px 0px 0px 0px !important;
+            height: 30px !important;
+        }
+        .leaflet-control-measure {
+            background: none!important;
+            border-radius: 4px !important;
+        }
+        .leaflet-control-measure .leaflet-control-measure-interaction {
+            background-color: #f8f8f8 !important;
+        }
+        .leaflet-touch .leaflet-control-measure
+        .leaflet-control-measure-toggle,
+        .leaflet-touch .leaflet-control-measure
+        .leaflet-control-measure-toggle:hover {
+            width: 30px !important;
+            height: 30px !important;
+            border-radius: 0px !important;
+            background-color: #f8f8f8 !important;
+            color: #444444 !important;
+            font-size: 13px;
+            line-height: 30px;
+            text-align: center;
+            text-indent: 0%;
+        }
+        .leaflet-control-layers {
+			padding: 2px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+            background-color: #f8f8f8 !important;
+            color: #444444 !important;
+
+		}
+        .leaflet-control-layers-expanded {
+			padding-left: 6px;
+		}	
+        .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+            display: block;
+            background-image: none;
+			text-decoration: none;
+            margin-bottom: 3px;
+        }
+        .leaflet-control-layers-expanded .leaflet-control-layers-toggle::after {
+            content: '»';
+            font-size: x-large;
+            color: #444444 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        .leaflet-overlay-pane {
+            z-index: 550;
+        }
+        .leaflet-popup-pane {
+            z-index: 700;
+        }
+        #gcd-button-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .leaflet-marker-icon{
+            white-space: nowrap;
+        }
+
+/* -- INÍCIO DAS PERSONALIZAÇÕES ANIMALX -- */
+
+        .custom-div-icon {
+        background: transparent;
+        border: none;
+    }
+
+.marcador-composto {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    /* Retirámos o transform: scale() daqui para evitar bugs de alinhamento */
+}
+
+/* Regra geral de alinhamento */
+.marcador-composto img {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Tipo de Registo (Fundo) - Aumentado 1.5x */
+.camada-base {
+    width: 13.74mm;  /* Original: 9.16 * 1.5 */
+    height: 16.5mm;  /* Original: 11.0 * 1.5 */
+    bottom: 0;
+    z-index: 1;
+}
+
+/* Cronologia (Meio) - Aumentado 1.5x */
+.camada-meio {
+    width: 12.75mm;  /* Original: 8.5 * 1.5 */
+    height: 15.39mm; /* Original: 10.26 * 1.5 */
+    bottom: 0;
+    z-index: 2;
+}
+
+/* Tipologia Animal (Topo) - Aumentado 1.5x */
+.camada-topo {
+    width: 16.5mm;   /* Original: 11.0 * 1.5 */
+    height: 16.5mm;  /* Original: 11.0 * 1.5 */
+    bottom: -0.72mm; /* O teu afastamento original de -0.48 vezes 1.5 */
+    z-index: 3;
+}
+
+/* --- CORES DO MARKER CLUSTER (Tons de Roxo) --- */
+
+/* 1. Cluster Pequeno (< 10 marcadores) */
+.marker-cluster-small {
+    background-color: rgba(165, 172, 220, 0.6) !important; /* Anel exterior mais claro */
+}
+.marker-cluster-small div {
+    background-color: rgba(108, 117, 183, 0.9) !important; /* Círculo interior */
+    color: white !important; /* Cor do número (branco para legibilidade) */
+}
+
+/* 2. Cluster Médio (10 a 99 marcadores) */
+.marker-cluster-medium {
+    background-color: rgba(108, 117, 183, 0.6) !important; 
+}
+.marker-cluster-medium div {
+    background-color: rgba(58, 65, 100, 0.9) !important; 
+    color: white !important;
+}
+
+/* 3. Cluster Grande (> 100 marcadores) */
+.marker-cluster-large {
+    background-color: rgba(58, 65, 100, 0.6) !important;
+}
+.marker-cluster-large div {
+    background-color: rgba(33, 38, 59, 0.9) !important; /* Roxo muito escuro */
+    color: white !important;
+}
+
+/* --- ESTILO DO MENU DE FILTROS --- */
+
+/* 1. Importar a fonte Nohemi (Regular e Bold) */
+@font-face {
+    font-family: 'Nohemi';
+    src: url('../webfonts/Nohemi-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Nohemi';
+    src: url('../webfonts/Nohemi-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Nohemi';
+    src: url('../webfonts/Nohemi-SemiBold.ttf') format('truetype');
+    font-weight: 600; 
+    font-style: normal;
+}
+/* 2. A Caixa do Menu */
+.painel-filtros {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    font-family: 'Nohemi', sans-serif; /* Atualizado para Nohemi */
+    color: #3a4164;
+    max-height: 65vh;
+    overflow-y: auto;
+    width: 260px;
+}
+
+.painel-filtros h3 {
+    margin: 15px 0 10px 0;
+    font-size: 15px;
+    font-weight: bold; /* Vai puxar o Nohemi-Bold.ttf automaticamente */
+    border-bottom: 2px solid #a5acdc;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.painel-filtros h3:first-child {
+    margin-top: 0;
+}
+
+.painel-filtros label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.painel-filtros label:hover {
+    opacity: 0.7;
+}
+
+.painel-filtros input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: #6c75b7;
+    transform: scale(1.1);
+}
+
+.painel-filtros-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    border-bottom: 2px solid #a5acdc;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.painel-filtros-topo span {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-colapsar {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #3a4164;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.input-pesquisa-especie {
+    width: 100%;
+    padding: 6px 8px;
+    margin-bottom: 15px;
+    border: 1px solid #a5acdc;
+    border-radius: 4px;
+    font-family: 'Nohemi', sans-serif;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.grupo-master {
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #6c75b7;
+    border-bottom: 1px dashed #d8dceb;
+    padding-bottom: 4px;
+}
+
+/* --- ALTERAR FONTE E ESTILO DO TÍTULO DO MAPA E POPUPS--- */
+.info {
+    font-family: 'Nohemi', sans-serif !important;
+}
+
+.info h2 {
+    font-family: 'Nohemi', sans-serif !important;
+    font-weight: bold !important;
+    color: #3a4164 !important; /* Cor roxa alinhada com o projeto */
+    font-size: 60px !important;
+    letter-spacing: 0.3px;
+}
+
+/* --- APLICAR FONTE NOHEMI AOS POPUPS --- */
+.leaflet-popup-content-wrapper, 
+.leaflet-popup-content {
+    font-family: 'Nohemi', sans-serif !important;
+}
+
+.leaflet-popup-content th, 
+.leaflet-popup-content td {
+    font-family: 'Nohemi', sans-serif !important;
+    color: #3a4164 !important; /* Mantém o tom de roxo do projeto nos metadados */
+}
+
+.leaflet-popup-content h3 {
+    font-family: 'Nohemi', sans-serif !important;
+    font-weight: bold !important;
+    color: #3a4164 !important;
+}
+
+/* --- BARRA DE EFEITO TEMPORAL (SLIDER) --- */
+.painel-tempo {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    font-family: 'Nohemi', sans-serif;
+    color: #3a4164;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 320px;
+    margin-bottom: 25px !important;
+    margin-left: 15px !important;
+}
+
+.btn-play {
+    
+    color: #6c75b7;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    line-height: 35px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+}
+
+.btn-play:active {
+    transform: scale(0.9);
+}
+
+.slider-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+#ano-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #6c75b7;
+}
+
+.extremo-ano {
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0.6;
+}
+
+input[type=range] {
+    accent-color: #6c75b7;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* --- EFEITO HOVER (Tooltip) --- */
+.estilo-tooltip {
+    background: white !important;
+    border: 1px solid #a5acdc !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    border-radius: 6px !important;
+    padding: 0 !important; /* Limpa o padding base do Leaflet */
+}
+
+.tooltip-animalx {
+    padding: 8px 12px;
+    font-family: 'Nohemi', sans-serif;
+    color: #3a4164;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* --- EFEITO CLIQUE (Popup Cartão) --- */
+.leaflet-popup-content-wrapper {
+    padding: 0 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    width: auto !important; /* Deixa o Flexbox controlar a largura */
+}
+
+/* Layout Lado a Lado */
+/* Layout Lado a Lado Expandido */
+.cartao-popup {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Nohemi', sans-serif;
+    color: #3a4164;
+    align-items: stretch; /* Força a imagem a ter exatamente a mesma altura do bloco de texto */
+}
+
+/* Bloco da Imagem (Esquerda) */
+.cartao-esquerda {
+    flex: 0 0 240px; /* Largura mais generosa para a fotografia */
+    background-color: #f4f0f5;
+}
+
+.cartao-img {
+    width: 100%;
+    height: 100%; /* Preenche a altura total da caixa sem espaços em branco */
+    object-fit: cover; /* Recorta proporcionalmente sem distorcer */
+    display: block;
+    border-right: 2px solid #d8dceb;
+}
+
+
+/* Logo completo e centrado para registos sem imagem */
+.cartao-img-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 45px;
+    background-color: #f4f0f5;
+    box-sizing: border-box;
+    border-right: 2px solid #d8dceb;
+}
+
+/* Bloco da Informação (Direita) */
+.cartao-direita {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 35px 20px 20px;
+    line-height: 1.5; /* Mais espaço interior para o texto não ficar apertado */
+}
+
+.cartao-direita h2 {
+    margin-bottom: 4px !important;
+}
+
+.cartao-direita .cientifico {
+    margin: 0 0 15px 0 !important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+    font-style: italic;
+    opacity: 0.7;
+    margin-bottom: 15px !important;
+}
+
+.lista-dados {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.lista-dados li strong {
+    color: #6c75b7;
+    font-weight:500;
+}
+
+
+
+/* Redesenho do botão Fechar 'X' */
+.leaflet-popup-close-button {
+    color: #3a4164 !important;
+    font-size: 20px !important;
+    padding: 5px 8px !important;
+    z-index: 10;
+}
+
+/* --- LAYOUT DASHBOARD ANIMALX --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Nohemi', sans-serif;
+    background-color: #fbf9fb; 
+    color: #3a4164;
+    overflow: hidden; 
+}
+
+.dashboard-animalx {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 1. Cabeçalho */
+.header-animalx {
+    padding: 15px 30px 10px 30px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between; /* Empurra o texto para a esquerda e o logo para a direita */
+    align-items: center; /* Centra tudo perfeitamente na vertical */
+    gap: 20px; /* Cria uma margem de segurança para o texto nunca tocar no logo */
+}
+
+.header-texto {
+    flex: 1; /* Permite que os textos ocupem todo o espaço restante */
+}
+
+.header-animalx h1 {
+    margin: 0 0 5px 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #3a4164;
+    letter-spacing: 0.3px;
+}
+
+.header-animalx p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.8;
+}
+.logo-canto-direito {
+    height: 80px; 
+    object-fit: contain;
+}
+
+/* 2. Barra de Ferramentas */
+.toolbar-animalx {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background-color: #ffffff;
+    border-top: 1px solid #f4f0f5;
+    border-bottom: 2px solid #d8dceb;
+}
+
+.toolbar-esq { display: flex; gap: 8px; }
+
+/* --- ESTILIZAÇÃO DOS BOTÕES DO TOPO --- */
+        .btn-filtro {
+            display: inline-flex !important;
+            flex-direction: row !important; /* Força o ícone e o texto a ficarem LADO A LADO */
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important; /* Espaço entre texto e ícone */
+            padding: 6px 16px !important;
+            border: 1px solid #a5acdc !important;
+            border-radius: 20px !important; /* Devolve a forma redondinha (pílula) */
+            font-family: 'Nohemi', sans-serif !important;
+            font-size: 13px !important;
+            color: #3a4164 !important;
+            background-color: #ffffff !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            height: auto !important; /* Deixa a altura ajustar-se ao conteúdo */
+            min-height: 34px !important;
+            white-space: nowrap !important; /* Impede que o texto parta para a linha de baixo */
+        }
+
+        .btn-filtro:hover, .btn-filtro.ativo {
+            background-color: #3a4164 !important;
+            color: #ffffff !important;
+            border-color: #3a4164 !important;
+        }
+
+        /* 2. Forçar tamanho compacto para o ícone */
+        .btn-filtro .icone-legenda {
+            height: 20px !important;       /* Altura exata para acompanhar a fonte */
+            max-height: 20px !important;
+            width: auto !important;
+            max-width: 20px !important;
+            display: block !important;
+            object-fit: contain !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;     /* Não deixa o ícone ser esmagado nem crescer */
+        }
+
+        /* 3. Ícones dentro dos Dropdowns */
+        .dropdown-conteudo label {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding-right: 12px !important;
+        }
+
+        .dropdown-conteudo .icone-legenda {
+            height: 20px !important;
+            max-height: 20px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* 4. Mudança suave de cor para branco no estado ativo */
+        .btn-filtro:hover .icone-legenda,
+        .btn-filtro.ativo .icone-legenda,
+        .dropdown-conteudo label:hover .icone-legenda,
+        .dropdown-conteudo label.selecionado .icone-legenda {
+            filter: brightness(0) invert(1) !important;
+        }
+
+        /* --- BOTÃO LIMPAR FILTROS --- */
+        .btn-limpar-filtros {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            padding: 6px 16px !important;
+            border: 1px solid #d8dceb !important;
+            border-radius: 20px !important; /* Mesma forma redondinha dos outros botões */
+            font-family: 'Nohemi', sans-serif !important;
+            font-size: 13px !important;
+            color: #6c75b7 !important;
+            background-color: #fbf9fb !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            height: auto !important;
+            min-height: 34px !important;
+            white-space: nowrap !important;
+        }
+
+        .btn-limpar-filtros:hover {
+            background-color: #d8dceb !important;
+            color: #3a4164 !important;
+        }
+
+.toolbar-centro input {
+    width: 300px;
+    padding: 8px 15px;
+    border: 1px solid #a5acdc;
+    border-radius: 20px;
+    font-family: 'Nohemi', sans-serif;
+    font-size: 13px;
+    color: #3a4164;
+    outline: none;
+}
+
+.toolbar-dir { display: flex; gap: 10px; }
+
+.select-animalx {
+    padding: 8px 15px;
+    border: 1px solid #a5acdc;
+    border-radius: 20px;
+    font-family: 'Nohemi', sans-serif;
+    font-size: 13px;
+    color: #3a4164;
+    background-color: #ffffff;
+    cursor: pointer;
+    outline: none;
+}
+
+/* 3. Área Principal (Mapa e Sidebar) */
+.main-animalx {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#mapa-container {
+    flex: 1;
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-animalx {
+    width: 380px;
+    background-color: #ffffff;
+    border-left: 2px solid #d8dceb;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000; 
+}
+
+/* --- WIDGET TEMPORAL FLUTUANTE NO MAPA --- */
+        .widget-temporal-flutuante {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000; /* Fica acima do mapa */
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px; /* Bordas muito arredondadas para parecer um botão */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            transition: max-width 0.4s ease, border-radius 0.4s ease;
+            max-width: 400px; /* Tamanho quando aberto */
+            padding: 5px;
+        }
+
+        /* O estado inicial fechado */
+        .widget-temporal-flutuante.colapsado {
+            max-width: 40px; 
+            border-radius: 50%; /* Fica um círculo perfeito */
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-toggle-tempo {
+            background: transparent;
+            border: none;
+            color: #6c75b7; /* O teu tom roxo */
+            font-size: 22px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: color 0.2s, transform 0.3s;
+        }
+
+        .btn-toggle-tempo:hover {
+            color: #3a4164;
+            transform: scale(1.1);
+        }
+
+        .timeline-conteudo {
+            width: 320px;
+            padding: 5px 15px 5px 5px;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        /* Esconde o conteúdo do slider quando colapsado */
+        .widget-temporal-flutuante.colapsado .timeline-conteudo {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Ajustes no telemóvel para não bater nas bordas */
+        @media (max-width: 768px) {
+            .widget-temporal-flutuante {
+                bottom: 15px;
+                left: 10px;
+            }
+            .widget-temporal-flutuante:not(.colapsado) {
+                border-radius: 15px;
+            }
+        }
+
+/* Linha do Tempo na Sidebar */
+.timeline-container {
+    padding: 20px;
+    background-color: #fbf9fb;
+    border-bottom: 2px solid #d8dceb;
+}
+
+.timeline-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.timeline-labels {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.timeline-labels #ano-display {
+    font-weight: bold;
+    font-size: 16px;
+    color: #6c75b7;
+}
+
+.lista-preview {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f4f0f5;
+}
+
+/* --- CARTÕES DE PREVIEW (SIDEBAR) --- */
+.card-preview {
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    border: 1px solid #d8dceb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    min-height: 90px;
+}
+
+.card-preview:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #a5acdc;
+}
+
+/* Área da Imagem Esquerda */
+.preview-img-container {
+    flex: 0 0 95px; /* Largura fixa da imagem */
+    background-color: #f4f0f5;
+    border-right: 1px solid #d8dceb;
+}
+
+.preview-img-foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.preview-img-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 15px; /* Margem para o logo não colar aos limites do cartão */
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Área do Texto Direita */
+.preview-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    justify-content: center;
+}
+
+.preview-content h4 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #21263b;
+    font-weight: 600;
+}
+
+.preview-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.badge-tipo {
+    background-color: #d8dceb;
+    color: #3a4164;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.preview-cientifico {
+    color: #888888;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.preview-meta-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #444444;
+}
+
+.preview-meta-bottom .separador {
+    color: #a5acdc;
+    font-weight: bold;
+}
+
+/* --- MENUS DROPDOWN DE MÚLTIPLA SELEÇÃO --- */
+.dropdown-multi {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-dropdown {
+    padding: 8px 15px;
+    border: 1px solid #a5acdc;
+    border-radius: 20px;
+    font-family: 'Nohemi', sans-serif;
+    font-size: 13px;
+    color: #3a4164;
+    background-color: #ffffff;
+    cursor: pointer;
+    min-width: 175px;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.btn-dropdown::after {
+    content: ' ▼';
+    font-size: 10px;
+    float: right;
+    margin-top: 3px;
+    opacity: 0.7;
+}
+
+.dropdown-conteudo {
+    display: none; /* Escondido por defeito */
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 100%;
+    box-shadow: 0px 8px 20px rgba(58, 65, 100, 0.15);
+    z-index: 2000; /* Garante que fica por cima do mapa (Leaflet) */
+    border-radius: 8px;
+    border: 1px solid #d8dceb;
+    margin-top: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dropdown-conteudo.aberto {
+    display: block;
+}
+
+.dropdown-conteudo label {
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #3a4164;
+    transition: all 0.2s;
+    user-select: none;
+    border-bottom: 1px solid #fbf9fb;
+}
+
+.dropdown-conteudo label input {
+    display: none; /* Escondemos as caixinhas de clique feias */
+}
+
+.dropdown-conteudo label:hover {
+    background-color: #f4f0f5;
+}
+
+/* O Segredo da Seleção: O fundo roxo! */
+.dropdown-conteudo label.selecionado {
+    background-color: #6c75b7;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* --- SCROLLBAR ELEGANTE PARA OS DROPDOWNS --- */
+        .dropdown-conteudo::-webkit-scrollbar {
+            width: 6px; /* Largura fina e discreta */
+        }
+        
+        .dropdown-conteudo::-webkit-scrollbar-thumb {
+            background: #6c75b7; /* O tom de roxo do teu projeto */
+            border-radius: 4px; /* Pontas arredondadas */
+        }
+        
+        .dropdown-conteudo::-webkit-scrollbar-track {
+            background: #fbf9fb; /* O tom de fundo muito clarinho do teu projeto */
+            border-radius: 4px;
+        }
+        
+        /* Opcional: Adicionar a mesma elegância à lista de resultados na sidebar */
+        .lista-preview::-webkit-scrollbar {
+            width: 6px;
+        }
+        .lista-preview::-webkit-scrollbar-thumb {
+            background: #6c75b7;
+            border-radius: 4px;
+        }
+        .lista-preview::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+/* 2. Cores de fundo dinâmicas para cada século! 
+           (Atenção: ajusta os códigos #HEX para as cores exatas que usaste nos SVG) */
+        #dd-seculo label.selecionado:has(input[value="12"]) { background-color: #15053b !important; } /* Séc XII (Exemplo) */
+        #dd-seculo label.selecionado:has(input[value="13"]) { background-color: #6d4468 !important; } /* Séc XIII (Exemplo) */
+        #dd-seculo label.selecionado:has(input[value="14"]) { background-color: #291262 !important; } /* Séc XIV (Exemplo) */
+        
+        #dd-seculo label.selecionado:has(input[value="15"]) { background-color: #48394c !important; } /* Séc XV */
+        #dd-seculo label.selecionado:has(input[value="16"]) { background-color: #3d1f89 !important; } /* Séc XVI */
+        #dd-seculo label.selecionado:has(input[value="17"]) { background-color: #953775 !important; } /* Séc XVII */
+        #dd-seculo label.selecionado:has(input[value="18"]) { background-color: #612275 !important; } /* Séc XVIII */
+        #dd-seculo label.selecionado:has(input[value="19"]) { background-color: #532da6 !important; } /* Séc XIX */
+        #dd-seculo label.selecionado:has(input[value="20"]) { background-color: #7c2d7b !important; } /* Séc XX */
+        #dd-seculo label.selecionado:has(input[value="21"]) { background-color: #612275 !important; } /* Séc XXI */
+        
+        #dd-seculo label.selecionado:has(input[value="Indeterminada"]) { background-color: #9596c1 !important; } /* Indeterminada */
+
+/* --- AFINAÇÃO DO CONTROLO DE CAMADAS LEAFLET --- */
+.leaflet-control-layers {
+    border: 1px solid #a5acdc !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    font-family: 'Nohemi', sans-serif !important;
+    color: #3a4164 !important;
+}
+
+.leaflet-control-layers-toggle {
+    background-size: 20px 20px !important; /* Ajusta o tamanho do ícone das camadas */
+}
+
+.leaflet-control-layers-expanded {
+    padding: 10px 15px !important;
+    border-radius: 8px !important;
+}
+
+.leaflet-control-layers label {
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leaflet-control-layers input[type="checkbox"], 
+.leaflet-control-layers input[type="radio"] {
+    accent-color: #6c75b7; /* Cor roxa na seleção das caixas */
+    transform: scale(1.1);
+}
+
+.titulo-sidebar {
+            font-family: Arial, sans-serif; /* Ou a fonte que estiveres a usar */
+            font-size: 16px;
+            font-weight: bold;
+            color: #535c8e; /* O tom de roxo do teu projeto */
+            margin-top: 15px;
+            margin-bottom: 10px;
+            text-align: left; /* Podes mudar para 'center' se preferires centrado */
+            padding-left: 10px;
+        }
+/* --- AJUSTES PARA TELEMÓVEIS --- */
+        @media (max-width: 768px) {
+            /* Força o ecrã a dividir-se na vertical */
+            body {
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* O mapa fica na metade de cima do telemóvel */
+            #map {
+                width: 100% !important;
+                height: 50vh !important; /* Ocupa 50% da altura do ecrã */
+                position: relative !important;
+            }
+
+            /* A barra lateral fica na metade de baixo */
+            /* ATENÇÃO: Confirma se o ID da tua barra é mesmo 'sidebar'. Se for uma classe ou outro ID, altera aqui! */
+            #sidebar {
+                width: 100% !important;
+                height: 50vh !important;
+                position: relative !important;
+                overflow-y: auto !important; /* Permite fazer scroll nos animais */
+                padding: 10px !important;
+            }
+
+            /* Ajusta o painel de camadas (o menu do canto superior esquerdo do mapa) para não sair do ecrã */
+            .leaflet-control-layers {
+                max-width: 250px;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+        }
+
+/* --- ESTILOS DO ECRÃ DE CARREGAMENTO --- */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff; /* Fundo branco limpo */
+            z-index: 99999; /* Garante que fica por cima do mapa e da barra lateral */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease; /* Efeito suave ao desaparecer */
+        }
+
+        /* O círculo a rodar */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3; /* Cinzento muito claro */
+            border-top: 5px solid #535c8e; /* O teu roxo */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        /* O texto de carregamento */
+        .loading-text {
+            font-family: Arial, sans-serif;
+            color: #535c8e;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* A animação de rotação */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    /* --- ESTILOS DO MENU DE CARTOGRAFIA NA SIDEBAR --- */
+        .painel-cartografia {
+            padding: 15px 20px;
+            background-color: #fbf9fb;
+            border-bottom: 2px solid #d8dceb;
+        }
+
+        .titulo-camadas {
+            font-family: 'Nohemi', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            color: #3a4164;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Domar o aspeto padrão do menu Leaflet para caber na sidebar perfeitamente */
+        #camadas-leaflet-aqui .leaflet-control-layers {
+            box-shadow: none !important;
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+            color: #3a4164 !important;
+        }
+
+        #camadas-leaflet-aqui .leaflet-control-layers-list {
+            margin: 0;
+        }
+
+        #camadas-leaflet-aqui .leaflet-control-layers-overlays label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        #camadas-leaflet-aqui .leaflet-control-layers-toggle {
+            display: none !important;
+        }
+     
+        #camadas-leaflet-aqui.escondido {
+            display: none !important;
+        }
+
+        #seta-cartografia {
+            transition: transform 0.3s ease; /* Animação suave */
+        }
+
+        /* Roda a seta 180 graus (para cima) quando o menu abre */
+        #seta-cartografia.aberto {
+            transform: rotate(180deg);
+        }
